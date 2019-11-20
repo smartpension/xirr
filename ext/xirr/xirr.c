@@ -14,6 +14,6 @@ static VALUE rb_return_xirr_net_present_value(VALUE self, VALUE rate, VALUE peri
 
 void Init_xirr(void) {
   rb_mXirr = rb_const_get(rb_cObject, rb_intern("Xirr"));
-  VALUE NativeHelpers = rb_define_class_under(rb_mXirr, "NativeHelpers", rb_cObject);
+  VALUE NativeHelpers = rb_define_module_under(rb_mXirr, "NativeHelpers");
   rb_define_method(NativeHelpers, "xirr_net_present_value", rb_return_xirr_net_present_value, 3);
 }
