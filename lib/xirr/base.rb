@@ -2,8 +2,9 @@
 module Xirr
   #  Base module for XIRR calculation Methods
   module Base
+    include NativeHelpers
+
     extend ActiveSupport::Concern
-    require 'inline'
     attr_reader :cf
 
     # @param cf [Cashflow]
@@ -24,16 +25,9 @@ module Xirr
     # @return [BigDecimal]
     def xnpv(rate)
       cf.inject(0) do |sum, t|
-        sum + (xnpv_c rate, t.amount, periods_from_start(t.date))
+        sum + xirr_net_present_value(rate, t.amount, periods_from_start(t.date))
       end
     end
 
-    inline { |builder|
-      builder.include '<math.h>'
-      builder.c '
-        double xnpv_c(double rate, double amount, double period) {
-          return amount / pow(1 + rate, period);
-        }'
-    }
   end
 end
