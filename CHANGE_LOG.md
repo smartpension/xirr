@@ -1,5 +1,9 @@
+## Version 0.9.0
+* Use latest version of Ruby
+* Depend on higher versions of Rails Activesupport
+
 ## Version 0.5.4
-* Fallsback If Newton Methods returns NaN 
+* Fallsback If Newton Methods returns NaN
 
 ## Version 0.5.3
 * Better tests
