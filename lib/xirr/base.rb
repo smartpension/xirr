@@ -2,8 +2,6 @@
 module Xirr
   #  Base module for XIRR calculation Methods
   module Base
-    include NativeHelpers
-
     extend ActiveSupport::Concern
     attr_reader :cf
 
@@ -25,7 +23,7 @@ module Xirr
     # @return [BigDecimal]
     def xnpv(rate)
       cf.inject(0) do |sum, t|
-        sum + xirr_net_present_value(rate, t.amount, periods_from_start(t.date))
+        sum + t.amount / (1+rate.to_f) ** periods_from_start(t.date)
       end
     end
 
