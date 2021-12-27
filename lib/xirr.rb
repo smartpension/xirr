@@ -1,5 +1,4 @@
 require 'xirr/version'
-require 'xirr/xirr'
 require 'bigdecimal'
 require 'active_support/configurable'
 require 'active_support/concern'
