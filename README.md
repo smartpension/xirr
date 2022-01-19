@@ -20,8 +20,6 @@ Or install it yourself as:
 ## Usage
 
 ```rb
-include Xirr
-
 cf = Xirr::Cashflow.new
 cf << Xirr::Transaction.new(-1000,  date: '2014-01-01'.to_date)
 cf << Xirr::Transaction.new(-2000,  date: '2014-03-01'.to_date)
