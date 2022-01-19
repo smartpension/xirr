@@ -1,8 +1,8 @@
 require_relative 'test_helper'
 
-describe 'Transaction' do
+describe 'Xirr::Transaction' do
   before(:all) do
-    @t = Transaction.new(1000, date: Date.today)
+    @t = Xirr::Transaction.new(1000, date: Date.today)
   end
 
   it 'converts amount to float' do

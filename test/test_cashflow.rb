@@ -1,12 +1,12 @@
 require_relative 'test_helper'
 
-describe 'Cashflows' do
+describe 'Xirr::Cashflow' do
   describe 'of an ok investment' do
     before(:all) do
-      @cf = Cashflow.new
-      @cf << Transaction.new(1000, date: '1985-01-01'.to_date)
-      @cf << Transaction.new(-600, date: '1990-01-01'.to_date)
-      @cf << Transaction.new(-6000, date: '1995-01-01'.to_date)
+      @cf = Xirr::Cashflow.new
+      @cf << Xirr::Transaction.new(1000, date: '1985-01-01'.to_date)
+      @cf << Xirr::Transaction.new(-600, date: '1990-01-01'.to_date)
+      @cf << Xirr::Transaction.new(-6000, date: '1995-01-01'.to_date)
     end
 
     it 'has a sum of its transactions' do
@@ -40,10 +40,10 @@ describe 'Cashflows' do
 
   describe 'of an inverted ok investment' do
     before(:all) do
-      @cf = Cashflow.new
-      @cf << Transaction.new(-1000, date: '1985-01-01'.to_date)
-      @cf << Transaction.new(600, date: '1990-01-01'.to_date)
-      @cf << Transaction.new(6000, date: '1995-01-01'.to_date)
+      @cf = Xirr::Cashflow.new
+      @cf << Xirr::Transaction.new(-1000, date: '1985-01-01'.to_date)
+      @cf << Xirr::Transaction.new(600, date: '1990-01-01'.to_date)
+      @cf << Xirr::Transaction.new(6000, date: '1995-01-01'.to_date)
     end
 
     it 'has a sum of its transactions' do
@@ -69,10 +69,10 @@ describe 'Cashflows' do
 
   describe 'of a very good investment' do
     before(:all) do
-      @cf = Cashflow.new
-      @cf << Transaction.new(1000000, date: Date.today - 180)
-      @cf << Transaction.new(-2200000, date: Date.today - 60)
-      @cf << Transaction.new(-800000, date: Date.today - 30)
+      @cf = Xirr::Cashflow.new
+      @cf << Xirr::Transaction.new(1000000, date: Date.today - 180)
+      @cf << Xirr::Transaction.new(-2200000, date: Date.today - 60)
+      @cf << Xirr::Transaction.new(-800000, date: Date.today - 30)
     end
 
     it 'bisection does not converge' do
@@ -104,9 +104,9 @@ describe 'Cashflows' do
 
   describe 'of a good investment' do
     before(:all) do
-      @cf = Cashflow.new
-      @cf << Transaction.new(1000, date: '1985-01-01'.to_date)
-      @cf << Transaction.new(-6000, date: '1985-01-02'.to_date)
+      @cf = Xirr::Cashflow.new
+      @cf << Xirr::Transaction.new(1000, date: '1985-01-01'.to_date)
+      @cf << Xirr::Transaction.new(-6000, date: '1985-01-02'.to_date)
     end
 
     it 'returns error if method is invalid' do
@@ -122,11 +122,11 @@ describe 'Cashflows' do
     end
   end
 
-  describe 'an all-negative Cashflow' do
+  describe 'an all-negative Xirr::Cashflow' do
     before(:all) do
-      @cf = Cashflow.new
-      @cf << Transaction.new(-600, date: '1990-01-01'.to_date)
-      @cf << Transaction.new(-600, date: '1995-01-01'.to_date)
+      @cf = Xirr::Cashflow.new
+      @cf << Xirr::Transaction.new(-600, date: '1990-01-01'.to_date)
+      @cf << Xirr::Transaction.new(-600, date: '1995-01-01'.to_date)
     end
 
     it 'is invalid' do
@@ -150,11 +150,11 @@ describe 'Cashflows' do
     end
   end
 
-  describe 'an all-positive Cashflow' do
+  describe 'an all-positive Xirr::Cashflow' do
     before(:all) do
-      @cf = Cashflow.new
-      @cf << Transaction.new(600, date: '1990-01-01'.to_date)
-      @cf << Transaction.new(600, date: '1995-01-01'.to_date)
+      @cf = Xirr::Cashflow.new
+      @cf << Xirr::Transaction.new(600, date: '1990-01-01'.to_date)
+      @cf << Xirr::Transaction.new(600, date: '1995-01-01'.to_date)
     end
 
     it 'is invalid' do
@@ -173,10 +173,10 @@ describe 'Cashflows' do
   describe 'of a bad investment' do
 
     before(:all) do
-      @cf = Cashflow.new
-      @cf << Transaction.new(1000, date: '1985-01-01'.to_date)
-      @cf << Transaction.new(-600, date: '1990-01-01'.to_date)
-      @cf << Transaction.new(-200, date: '1995-01-01'.to_date)
+      @cf = Xirr::Cashflow.new
+      @cf << Xirr::Transaction.new(1000, date: '1985-01-01'.to_date)
+      @cf << Xirr::Transaction.new(-600, date: '1990-01-01'.to_date)
+      @cf << Xirr::Transaction.new(-200, date: '1995-01-01'.to_date)
     end
 
     it 'has an Internal Rate of Return on Bisection Method' do
@@ -194,7 +194,10 @@ describe 'Cashflows' do
 
   describe 'of a long investment' do
     before(:all) do
-      @cf = Cashflow.new flow: [Transaction.new(-1000, date: Date.new(1957, 1, 1)), Transaction.new(390000, date: Date.new(2013, 1, 1))]
+      @cf = Xirr::Cashflow.new flow: [
+        Xirr::Transaction.new(-1000, date: Date.new(1957, 1, 1)),
+        Xirr::Transaction.new(390000, date: Date.new(2013, 1, 1))
+      ]
     end
 
     it 'has an Internal Rate of Return on Bisection Method' do
@@ -212,11 +215,11 @@ describe 'Cashflows' do
 
   describe 'reapeated cashflow' do
     before(:all) do
-      @cf = Cashflow.new
-      @cf << Transaction.new(1000.0, date: '2011-12-07'.to_date)
-      @cf << Transaction.new(2000.0, date: '2011-12-07'.to_date)
-      @cf << Transaction.new(-2000.0, date: '2013-05-21'.to_date)
-      @cf << Transaction.new(-4000.0, date: '2013-05-21'.to_date)
+      @cf = Xirr::Cashflow.new
+      @cf << Xirr::Transaction.new(1000.0, date: '2011-12-07'.to_date)
+      @cf << Xirr::Transaction.new(2000.0, date: '2011-12-07'.to_date)
+      @cf << Xirr::Transaction.new(-2000.0, date: '2013-05-21'.to_date)
+      @cf << Xirr::Transaction.new(-4000.0, date: '2013-05-21'.to_date)
     end
     #
     # it 'has a compact cashflow' do
@@ -230,42 +233,41 @@ describe 'Cashflows' do
 
   describe 'of a real case' do
     before(:all) do
-      @cf = Cashflow.new
-      @cf << Transaction.new(105187.06, date: '2011-12-07'.to_date)
-      @cf << Transaction.new(816709.66, date: '2011-12-07'.to_date)
-      @cf << Transaction.new(479069.684, date: '2011-12-07'.to_date)
-      @cf << Transaction.new(937309.708, date: '2012-01-18'.to_date)
-      @cf << Transaction.new(88622.661, date: '2012-07-03'.to_date)
-      @cf << Transaction.new(100000.0, date: '2012-07-03'.to_date)
-      @cf << Transaction.new(80000.0, date: '2012-07-19'.to_date)
-      @cf << Transaction.new(403627.95, date: '2012-07-23'.to_date)
-      @cf << Transaction.new(508117.9, date: '2012-07-23'.to_date)
-      @cf << Transaction.new(789706.87, date: '2012-07-23'.to_date)
-      @cf << Transaction.new(-88622.661, date: '2012-09-11'.to_date)
-      @cf << Transaction.new(-789706.871, date: '2012-09-11'.to_date)
-      @cf << Transaction.new(-688117.9, date: '2012-09-11'.to_date)
-      @cf << Transaction.new(-403627.95, date: '2012-09-11'.to_date)
-      @cf << Transaction.new(403627.95, date: '2012-09-12'.to_date)
-      @cf << Transaction.new(789706.871, date: '2012-09-12'.to_date)
-      @cf << Transaction.new(88622.661, date: '2012-09-12'.to_date)
-      @cf << Transaction.new(688117.9, date: '2012-09-12'.to_date)
-      @cf << Transaction.new(45129.14, date: '2013-03-11'.to_date)
-      @cf << Transaction.new(26472.08, date: '2013-03-11'.to_date)
-      @cf << Transaction.new(51793.2, date: '2013-03-11'.to_date)
-      @cf << Transaction.new(126605.59, date: '2013-03-11'.to_date)
-      @cf << Transaction.new(278532.29, date: '2013-03-28'.to_date)
-      @cf << Transaction.new(99284.1, date: '2013-03-28'.to_date)
-      @cf << Transaction.new(58238.57, date: '2013-03-28'.to_date)
-      @cf << Transaction.new(113945.03, date: '2013-03-28'.to_date)
-      @cf << Transaction.new(405137.88, date: '2013-05-21'.to_date)
-      @cf << Transaction.new(-405137.88, date: '2013-05-21'.to_date)
-      @cf << Transaction.new(165738.23, date: '2013-05-21'.to_date)
-      @cf << Transaction.new(-165738.23, date: '2013-05-21'.to_date)
-      @cf << Transaction.new(144413.24, date: '2013-05-21'.to_date)
-      @cf << Transaction.new(84710.65, date: '2013-05-21'.to_date)
-      @cf << Transaction.new(-84710.65, date: '2013-05-21'.to_date)
-      @cf << Transaction.new(-144413.24, date: '2013-05-21'.to_date)
-
+      @cf = Xirr::Cashflow.new
+      @cf << Xirr::Transaction.new(105187.06, date: '2011-12-07'.to_date)
+      @cf << Xirr::Transaction.new(816709.66, date: '2011-12-07'.to_date)
+      @cf << Xirr::Transaction.new(479069.684, date: '2011-12-07'.to_date)
+      @cf << Xirr::Transaction.new(937309.708, date: '2012-01-18'.to_date)
+      @cf << Xirr::Transaction.new(88622.661, date: '2012-07-03'.to_date)
+      @cf << Xirr::Transaction.new(100000.0, date: '2012-07-03'.to_date)
+      @cf << Xirr::Transaction.new(80000.0, date: '2012-07-19'.to_date)
+      @cf << Xirr::Transaction.new(403627.95, date: '2012-07-23'.to_date)
+      @cf << Xirr::Transaction.new(508117.9, date: '2012-07-23'.to_date)
+      @cf << Xirr::Transaction.new(789706.87, date: '2012-07-23'.to_date)
+      @cf << Xirr::Transaction.new(-88622.661, date: '2012-09-11'.to_date)
+      @cf << Xirr::Transaction.new(-789706.871, date: '2012-09-11'.to_date)
+      @cf << Xirr::Transaction.new(-688117.9, date: '2012-09-11'.to_date)
+      @cf << Xirr::Transaction.new(-403627.95, date: '2012-09-11'.to_date)
+      @cf << Xirr::Transaction.new(403627.95, date: '2012-09-12'.to_date)
+      @cf << Xirr::Transaction.new(789706.871, date: '2012-09-12'.to_date)
+      @cf << Xirr::Transaction.new(88622.661, date: '2012-09-12'.to_date)
+      @cf << Xirr::Transaction.new(688117.9, date: '2012-09-12'.to_date)
+      @cf << Xirr::Transaction.new(45129.14, date: '2013-03-11'.to_date)
+      @cf << Xirr::Transaction.new(26472.08, date: '2013-03-11'.to_date)
+      @cf << Xirr::Transaction.new(51793.2, date: '2013-03-11'.to_date)
+      @cf << Xirr::Transaction.new(126605.59, date: '2013-03-11'.to_date)
+      @cf << Xirr::Transaction.new(278532.29, date: '2013-03-28'.to_date)
+      @cf << Xirr::Transaction.new(99284.1, date: '2013-03-28'.to_date)
+      @cf << Xirr::Transaction.new(58238.57, date: '2013-03-28'.to_date)
+      @cf << Xirr::Transaction.new(113945.03, date: '2013-03-28'.to_date)
+      @cf << Xirr::Transaction.new(405137.88, date: '2013-05-21'.to_date)
+      @cf << Xirr::Transaction.new(-405137.88, date: '2013-05-21'.to_date)
+      @cf << Xirr::Transaction.new(165738.23, date: '2013-05-21'.to_date)
+      @cf << Xirr::Transaction.new(-165738.23, date: '2013-05-21'.to_date)
+      @cf << Xirr::Transaction.new(144413.24, date: '2013-05-21'.to_date)
+      @cf << Xirr::Transaction.new(84710.65, date: '2013-05-21'.to_date)
+      @cf << Xirr::Transaction.new(-84710.65, date: '2013-05-21'.to_date)
+      @cf << Xirr::Transaction.new(-144413.24, date: '2013-05-21'.to_date)
     end
 
     it 'is a long and bad investment and newton generates an error' do
@@ -275,37 +277,51 @@ describe 'Cashflows' do
 
   describe 'xichen27' do
     it 'it matchs Excel' do
-      cf = Cashflow.new
-      cf << Transaction.new(-10000, date: '2014-04-15'.to_date)
-      cf << Transaction.new(305.6, date: '2014-05-15'.to_date)
-      cf << Transaction.new(500, date: '2014-10-19'.to_date)
+      cf = Xirr::Cashflow.new
+      cf << Xirr::Transaction.new(-10000, date: '2014-04-15'.to_date)
+      cf << Xirr::Transaction.new(305.6, date: '2014-05-15'.to_date)
+      cf << Xirr::Transaction.new(500, date: '2014-10-19'.to_date)
+
       assert_equal '-0.996814607'.to_f.round(3), cf.xirr.to_f.round(3)
     end
   end
 
   describe 'marano' do
     it 'it matchs Excel' do
-      cf = Cashflow.new
-      cf << Transaction.new(900.0, date: '2014-11-07'.to_date)
-      cf << Transaction.new(-13.5, date: '2015-05-06'.to_date)
+      cf = Xirr::Cashflow.new
+      cf << Xirr::Transaction.new(900.0, date: '2014-11-07'.to_date)
+      cf << Xirr::Transaction.new(-13.5, date: '2015-05-06'.to_date)
+
       assert_equal '-0.9998'.to_f.round(4), cf.xirr.to_f.round(4)
     end
   end
 
   describe 'period' do
     it 'has zero for years of investment' do
-      cf = Cashflow.new flow: [Transaction.new(105187.06, date: '2011-12-07'.to_date), Transaction.new(-105187.06 * 1.0697668105671994, date: '2011-12-07'.to_date)]
+      cf = Xirr::Cashflow.new flow: [
+        Xirr::Transaction.new(105187.06, date: '2011-12-07'.to_date),
+        Xirr::Transaction.new(-105187.06 * 1.0697668105671994, date: '2011-12-07'.to_date)
+      ]
+
       assert_equal 0.0, cf.irr_guess
       assert_equal Xirr::REPLACE_FOR_NIL, cf.xirr #(method: :newton_method)
     end
 
     it 'respects a different period' do
-      cf = Cashflow.new period: 100, flow: [Transaction.new(-1000, date: Date.new(1957, 1, 1)), Transaction.new(390000, date: Date.new(2013, 1, 1))]
+      cf = Xirr::Cashflow.new period: 100, flow: [
+        Xirr::Transaction.new(-1000, date: Date.new(1957, 1, 1)),
+        Xirr::Transaction.new(390000, date: Date.new(2013, 1, 1))
+      ]
+
       assert_equal 0.029598, cf.xirr
     end
 
     it 'respects default and ad hoc period' do
-      cf = Cashflow.new period: 100, flow: [Transaction.new(-1000, date: Date.new(1957, 1, 1)), Transaction.new(390000, date: Date.new(2013, 1, 1))]
+      cf = Xirr::Cashflow.new period: 100, flow: [
+        Xirr::Transaction.new(-1000, date: Date.new(1957, 1, 1)),
+        Xirr::Transaction.new(390000, date: Date.new(2013, 1, 1))
+      ]
+
       assert_equal 0.112339, cf.xirr(period: 365.0)
     end
   end
