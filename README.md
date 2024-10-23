@@ -53,15 +53,10 @@ http://rubydoc.info/github/tubedude/xirr/master/frames
 ## Supported versions
 
     Ruby:
-     - 2.2.1
-     - 2.3
-     - 2.4
-     - 2.7
+     - 3.1 and later
 
     ActiveSupport:
-     - 4.2
-     - 5
-     - 6
+     - 7 and later
 
 ## Thanks
 
