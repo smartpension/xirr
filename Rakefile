@@ -7,6 +7,6 @@ task :default => [:test_units]
 
 Rake::TestTask.new("test_units") do |t|
   t.pattern = 'test/*.rb'
-  t.verbose = false
+  t.verbose = true
   t.warning = false
 end
